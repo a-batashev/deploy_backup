@@ -1,0 +1,11 @@
+{
+    "name": "nauka/deploy_backup",
+    "description": "Gets, unpacks and configurates backups of sites",
+    "type": "project",
+    "authors": [
+        {
+            "name": "AA.Batashev",
+            "email": "AA.Batashev@npo-nauka.ru"
+        }
+    ]
+}

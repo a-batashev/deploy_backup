@@ -40,14 +40,18 @@ class ArgumentsProcessor
         foreach ($filteredArgs as $arg => $value) {
             $firstChr = mb_substr($arg, 0, 1);
 
-            if ($firstChr === '<') {
-                $key = trim($arg, '<>');
-                $this->arguments[$key] = $value;
-            } elseif ($firstChr === '-') {
-                $key = ltrim($arg, '-');
-                $this->options[$key] = $value;
-            } else {
-                $this->commands[] = $arg;
+            switch ($firstChr) {
+                case '<':
+                    $key = trim($arg, '<>');
+                    $this->arguments[$key] = $value;
+                    break;
+                case '-':
+                    $key = ltrim($arg, '-');
+                    $this->options[$key] = $value;
+                    break;
+                default:
+                    $this->commands[] = $arg;
+                    break;
             }
         }
     }

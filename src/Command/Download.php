@@ -6,6 +6,6 @@ class Download extends Command
 {
     public function __construct()
     {
-        echo 'Download', "\n";
+        echo 'Download', PHP_EOL;
     }
 }

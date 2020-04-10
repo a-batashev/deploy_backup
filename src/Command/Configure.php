@@ -6,6 +6,6 @@ class Configure extends Command
 {
     public function __construct()
     {
-        echo 'Configure', "\n";
+        echo 'Configure', PHP_EOL;
     }
 }

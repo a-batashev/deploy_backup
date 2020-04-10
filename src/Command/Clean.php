@@ -22,6 +22,6 @@ class Clean extends Command
             throw new \Exception("Incorrect path to site directory: '{$dir}'.");
         }
 
-        echo 'Clean', "\n";
+        echo 'Clean', PHP_EOL;
     }
 }

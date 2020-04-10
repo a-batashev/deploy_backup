@@ -25,7 +25,8 @@ class Command
             throw new \Exception("Unknown command: '{$command}'.");
         }
 
-        $className = 'App\\Command\\' . ucfirst($command);
+        $className = __NAMESPACE__ . '\\' . ucfirst($command);
+
         new $className();
     }
 }

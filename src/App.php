@@ -11,20 +11,13 @@ use App\Command\Command;
 class App
 {
     /**
-     * Command line arguments
-     *
-     * @var ArgumentsProcessor
-     */
-    private $args;
-
-    /**
      * Construct
      *
      * @param array $rawArgs
      */
     public function __construct(array $rawArgs)
     {
-        $this->args = new ArgumentsProcessor($rawArgs);
+        ArgumentsProcessor::getInstance()->process($rawArgs);
     }
 
     /**
@@ -34,13 +27,14 @@ class App
      */
     public function run()
     {
-        $args = $this->args;
+        $args = ArgumentsProcessor::getInstance();
+
         $presetName = $args->getArgument('preset');
         $commandName = $args->getCommand();
 
-        $configFile = $this->makePathToConfig();
-
         $config = Config::getInstance();
+
+        $configFile = $this->makePathToConfig();
 
         // Parse the configuration file
         $config->parse($configFile);

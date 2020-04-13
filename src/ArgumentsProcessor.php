@@ -12,28 +12,51 @@ class ArgumentsProcessor
      *
      * @var array
      */
-    private $arguments = [];
+    private static $arguments = [];
 
     /**
      * Processed CLI options
      *
      * @var array
      */
-    private $options = [];
+    private static $options = [];
 
     /**
      * Processed CLI commands
      *
      * @var array
      */
-    private $commands = [];
+    private static $commands = [];
 
     /**
-     * Construct
+     * Instance of ArgumentsProcessor
      *
-     * @param array $args
+     * @var ArgumentsProcessor
      */
-    public function __construct(array $args)
+    private static $instance;
+
+    /**
+     * Construct is hidden for singleton
+     */
+    private function __construct()
+    {
+    }
+
+    /**
+     * Disables cloning for singleton
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * Disables unserialize for singleton
+     */
+    private function __wakeup()
+    {
+    }
+
+    public function process(array $args)
     {
         $filteredArgs = array_filter($args);
 
@@ -43,46 +66,60 @@ class ArgumentsProcessor
             switch ($firstChr) {
                 case '<':
                     $key = trim($arg, '<>');
-                    $this->arguments[$key] = $value;
+                    self::$arguments[$key] = $value;
                     break;
                 case '-':
                     $key = ltrim($arg, '-');
-                    $this->options[$key] = $value;
+                    self::$options[$key] = $value;
                     break;
                 default:
-                    $this->commands[] = $arg;
+                    self::$commands[] = $arg;
                     break;
             }
         }
     }
 
+    /**
+     * Return instance of ArgumentsProcessor
+     *
+     * @return ArgumentsProcessor
+     */
+    public static function getInstance(): self
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
     public function getArguments()
     {
-        return $this->arguments;
+        return self::$arguments;
     }
 
     public function getArgument(string $name)
     {
-        return $this->arguments[$name] ?? null;
+        return self::$arguments[$name] ?? null;
     }
 
     public function getOptions()
     {
-        return $this->options;
+        return self::$options;
     }
 
     public function getOption(string $name)
     {
-        return $this->options[$name] ?? null;
+        return self::$options[$name] ?? null;
     }
 
     public function getCommands()
     {
-        return $this->commands;
+        return self::$commands;
     }
 
     public function getCommand(int $index = 0)
     {
-        return $this->commands[$index] ?? null;
+        return self::$commands[$index] ?? null;
     }
 }

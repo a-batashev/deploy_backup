@@ -21,7 +21,7 @@ class ArgumentsProcessorTest extends TestCase
             '<argument2>' => null,
         ];
 
-        $this->instance = new ArgumentsProcessor($rawArgs);
+        $this->instance = ArgumentsProcessor::getInstance()->process($rawArgs);
     }
 
     public function testGetArgumentsArray()

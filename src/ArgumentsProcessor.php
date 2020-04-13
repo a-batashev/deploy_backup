@@ -56,6 +56,12 @@ class ArgumentsProcessor
     {
     }
 
+    /**
+     * Process CLI arguments
+     *
+     * @param array $args
+     * @return ArgumentsProcessor
+     */
     public function process(array $args)
     {
         $filteredArgs = array_filter($args);
@@ -73,10 +79,14 @@ class ArgumentsProcessor
                     self::$options[$key] = $value;
                     break;
                 default:
-                    self::$commands[] = $arg;
+                    if (!in_array($arg, self::$commands)) {
+                        self::$commands[] = $arg;
+                    }
                     break;
             }
         }
+
+        return self::$instance;
     }
 
     /**

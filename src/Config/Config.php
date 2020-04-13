@@ -36,23 +36,7 @@ class Config
     }
 
     /**
-     * Return instance of Config
-     *
-     * @return Config
-     */
-    public static function getInstance(): Config
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
-
-    /**
      * Disables cloning for singleton
-     *
-     * @return void
      */
     private function __clone()
     {
@@ -63,6 +47,20 @@ class Config
      */
     private function __wakeup()
     {
+    }
+
+    /**
+     * Return instance of Config
+     *
+     * @return Config
+     */
+    public static function getInstance(): self
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
     /**

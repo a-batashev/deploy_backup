@@ -2,44 +2,23 @@
 
 namespace App\Command;
 
-use App\ArgumentsProcessor;
-use App\Config\Config;
-
 /**
  * Removes content of the directory
  */
 class Clean extends Command
 {
     /**
-     * Constructor
+     * Run command
      */
-    public function __construct()
+    public function run()
     {
-        $config = Config::getInstance()->getConfigByPreset();
+        $sitePath = self::checkSitePath(self::$config);
 
-        self::checkSitePath($config);
+        self::checkDir($sitePath);
 
-        self::checkDir($config['sitePath']);
-
-        self::cleanDir($config['sitePath']);
+        self::cleanDir($sitePath);
 
         echo 'Clean', PHP_EOL;
-    }
-
-    /**
-     * Check sitepath at configuration file
-     *
-     * @return void
-     */
-    private static function checkSitePath(array $config)
-    {
-        if (!isset($config['sitePath'])) {
-            throw new \Exception("Configuration option 'sitePath' is empty.");
-        }
-
-        if (!file_exists($config['sitePath'])) {
-            throw new \Exception("Incorrect path to site directory: '{$config['sitePath']}'.");
-        }
     }
 
     /**
@@ -67,7 +46,7 @@ class Clean extends Command
      */
     public static function cleanDir(string $dir)
     {
-        $dryRun = ArgumentsProcessor::getInstance()->getOption('dry-run') ?? false;
+        $dryRun = self::$args->getOption('dry-run') ?? false;
 
         self::rrmdir($dir, $dryRun);
 
@@ -80,7 +59,7 @@ class Clean extends Command
      * Remove recursively content of a directory
      *
      * @param string $dir
-     * @param boolean $dryRun   Don't remove, only print
+     * @param boolean $dryRun    Don't clean, only print names of files/dirs
      * @param boolean $deleteThisDir    Remove self?
      * @return void
      */

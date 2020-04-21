@@ -18,7 +18,7 @@ class Clean extends Command
 
         self::cleanDir($sitePath);
 
-        echo 'Clean', PHP_EOL;
+        echo 'Clean complete', PHP_EOL;
     }
 
     /**

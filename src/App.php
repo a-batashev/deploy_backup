@@ -27,11 +27,13 @@ class App
      */
     public function run()
     {
+        // Parse CLI arguments
         $args = ArgumentsProcessor::getInstance();
 
         $presetName = $args->getArgument('preset');
         $commandName = $args->getCommand();
 
+        // Get configuration from file
         $config = Config::getInstance();
 
         $configFile = $this->makePathToConfig();
@@ -39,11 +41,11 @@ class App
         // Parse the configuration file
         $config->parse($configFile);
 
-        // Get configuration accordingly name of preset
+        // Get configuration by preset's name
         $config->setPreset($presetName);
 
         // Run command
-        $command = new Command($commandName);
+        $command = Command::dispatch($commandName);
     }
 
     /**

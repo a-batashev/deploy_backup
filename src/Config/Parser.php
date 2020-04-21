@@ -44,7 +44,7 @@ class Parser
     {
         $parser = $this->chooseParser();
 
-        return $this->parseFile($parser);
+        return $parser::parseFile($this->file);
     }
 
     /**
@@ -52,7 +52,7 @@ class Parser
      *
      * @return void
      */
-    private function chooseParser()
+    private function chooseParser(): ParserInterface
     {
         $extension = pathinfo($this->file, PATHINFO_EXTENSION);
 
@@ -61,20 +61,10 @@ class Parser
             case 'json':
                 return new ParserYaml();
                 break;
+
             default:
                 throw new \Exception("Parser of '{$extension}' not found.");
                 break;
         }
-    }
-
-    /**
-     * Parse configuration file with a parser
-     *
-     * @param ParserInterface $parser
-     * @return array
-     */
-    private function parseFile(ParserInterface $parser): array
-    {
-        return $parser::parseFile($this->file);
     }
 }

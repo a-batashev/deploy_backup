@@ -84,9 +84,11 @@ class Config
     {
         self::checkConfigFile($file);
 
-        $parser = new Parser($file);
+        $type = self::getExtension($file);
 
-        self::$config = $parser->run();
+        $parser = self::chooseParser($type);
+
+        self::$config = $parser::parseFile($file);
 
         return self::$config;
     }
@@ -126,5 +128,36 @@ class Config
         if (!is_readable($file)) {
             throw new \Exception("Configuration file isn't readable: '{$file}'.");
         }
+    }
+
+    /**
+     * Parser dispatching
+     *
+     * @param string $type
+     * @return void
+     */
+    private static function chooseParser(string $type): ParserInterface
+    {
+        switch (strtolower($type)) {
+            case 'yaml':
+            case 'json':
+                return new ParserYaml();
+                break;
+
+            default:
+                throw new \Exception("Parser of '{$type}' not found.");
+                break;
+        }
+    }
+
+    /**
+     * Get extension of file
+     *
+     * @param string $file
+     * @return string
+     */
+    private static function getExtension(string $file): string
+    {
+        return pathinfo($file, PATHINFO_EXTENSION);
     }
 }

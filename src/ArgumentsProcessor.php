@@ -132,4 +132,9 @@ class ArgumentsProcessor
     {
         return self::$commands[$index] ?? null;
     }
+
+    public function isDryRun(): bool
+    {
+        return self::$instance->getOption('dry-run') ?? false;
+    }
 }

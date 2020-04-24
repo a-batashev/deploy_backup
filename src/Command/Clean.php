@@ -10,15 +10,15 @@ class Clean extends Command
     /**
      * Run command
      */
-    public function run()
+    public static function run()
     {
-        $sitePath = self::checkSitePath(self::$config);
+        $sitePath = self::$config['sitePath'];
 
         self::checkDir($sitePath);
 
         self::cleanDir($sitePath);
 
-        echo 'Clean complete', PHP_EOL;
+        echo 'Cleaning complete', PHP_EOL;
     }
 
     /**

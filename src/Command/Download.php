@@ -2,10 +2,51 @@
 
 namespace App\Command;
 
+use App\Downloader;
+
+/**
+ * Get files from remote/local repository
+ */
 class Download extends Command
 {
-    public function __construct()
+    /**
+     * Run command
+     *
+     * @return void
+     */
+    public static function run()
     {
-        echo 'Download', PHP_EOL;
+        $sitePath = self::$config['sitePath'];
+
+        $transportType = self::$config['transport']['type'];
+
+        $downloader = self::chooseDownloader($transportType);
+
+        $downloader->get();
+
+        echo 'Download complete', PHP_EOL;
+    }
+
+    /**
+     * Downloader dispatching
+     *
+     * @param string $transport
+     * @return Downloader\DownloaderInterface
+     */
+    private static function chooseDownloader(string $transport): Downloader\DownloaderInterface
+    {
+        switch ($transport) {
+            case 'filesystem':
+                return new Downloader\Filesystem();
+                break;
+
+            case 'restic':
+                return new Downloader\Restic();
+                break;
+
+            default:
+                throw new \Exception("Transport '{$transport}' not found.");
+                break;
+        }
     }
 }

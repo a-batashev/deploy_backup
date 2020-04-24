@@ -38,11 +38,11 @@ class App
 
         $configFile = $this->makePathToConfig();
 
-        // Parse the configuration file
-        $config->parse($configFile);
-
         // Get configuration by preset's name
         $config->setPreset($presetName);
+
+        // Parse the configuration file
+        $config->parse($configFile);
 
         // Run command
         $command = Command::dispatch($commandName);

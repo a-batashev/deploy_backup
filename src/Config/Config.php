@@ -84,11 +84,13 @@ class Config
     {
         self::checkConfigFile($file);
 
-        $type = self::getExtension($file);
+        $type = self::getType($file);
 
         $parser = self::chooseParser($type);
 
         self::$config = $parser::parseFile($file);
+
+        self::checkSitePath();
 
         return self::$config;
     }
@@ -101,7 +103,6 @@ class Config
      */
     public function getConfigByPreset(string $preset = null)
     {
-
         $preset = $preset ?? self::$preset;
 
         $config = self::$config;
@@ -131,6 +132,24 @@ class Config
     }
 
     /**
+     * Check sitepath at configuration file
+     *
+     * @return void
+     */
+    protected static function checkSitePath()
+    {
+        $config = self::$instance->getConfigByPreset();
+
+        if (!isset($config['sitePath'])) {
+            throw new \Exception("Configuration option 'sitePath' is empty.");
+        }
+
+        if (!file_exists($config['sitePath'])) {
+            throw new \Exception("Incorrect path to site directory: '{$config['sitePath']}'.");
+        }
+    }
+
+    /**
      * Parser dispatching
      *
      * @param string $type
@@ -138,7 +157,7 @@ class Config
      */
     private static function chooseParser(string $type): ParserInterface
     {
-        switch (strtolower($type)) {
+        switch ($type) {
             case 'yaml':
             case 'json':
                 return new ParserYaml();
@@ -156,8 +175,10 @@ class Config
      * @param string $file
      * @return string
      */
-    private static function getExtension(string $file): string
+    private static function getType(string $file): string
     {
-        return pathinfo($file, PATHINFO_EXTENSION);
+        $extension = pathinfo($file, PATHINFO_EXTENSION);
+
+        return strtolower($extension);
     }
 }

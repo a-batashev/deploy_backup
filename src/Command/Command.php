@@ -58,22 +58,4 @@ class Command
 
         $command->run();
     }
-
-    /**
-     * Check sitepath at configuration file
-     *
-     * @return string
-     */
-    protected static function checkSitePath(array $config)
-    {
-        if (!isset($config['sitePath'])) {
-            throw new \Exception("Configuration option 'sitePath' is empty.");
-        }
-
-        if (!file_exists($config['sitePath'])) {
-            throw new \Exception("Incorrect path to site directory: '{$config['sitePath']}'.");
-        }
-
-        return $config['sitePath'];
-    }
 }

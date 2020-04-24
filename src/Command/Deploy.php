@@ -4,11 +4,11 @@ namespace App\Command;
 
 class Deploy extends Command
 {
-    public function __construct()
+    public function run()
     {
-        new Clean();
-        new Download();
-        new Configure();
+        Clean::run();
+        Download::run();
+        Configure::run();
 
         echo 'Deploy is successfull';
     }

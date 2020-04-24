@@ -4,8 +4,8 @@ namespace App\Command;
 
 class Configure extends Command
 {
-    public function __construct()
+    public static function run()
     {
-        echo 'Configure', PHP_EOL;
+        echo 'Configuration setting complete', PHP_EOL;
     }
 }

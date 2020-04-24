@@ -46,9 +46,7 @@ class Clean extends Command
      */
     public static function cleanDir(string $dir)
     {
-        $dryRun = self::$args->getOption('dry-run') ?? false;
-
-        self::rrmdir($dir, $dryRun);
+        self::rrmdir($dir, self::$args->isDryRun());
 
         if (!file_exists($dir)) {
             mkdir($dir, 0775);
@@ -66,7 +64,7 @@ class Clean extends Command
     private static function rrmdir(string $dir, bool $dryRun = false, bool $deleteThisDir = false)
     {
         if (!is_readable($dir) || !is_writable($dir)) {
-            echo "can't remove {$dir}", PHP_EOL;
+            echo "Can't remove {$dir}", PHP_EOL;
 
             return;
         }
@@ -74,7 +72,7 @@ class Clean extends Command
         $scan = scandir($dir);
 
         if ($scan === false) {
-            echo "can't access to directory {$dir}", PHP_EOL;
+            echo "Can't access to directory {$dir}", PHP_EOL;
 
             return;
         }
@@ -88,7 +86,7 @@ class Clean extends Command
             $path = $dir . DIRECTORY_SEPARATOR . $file;
 
             if (!is_writable($path) || !is_readable($path)) {
-                echo "can't access to {$path}", PHP_EOL;
+                echo "Can't access to {$path}", PHP_EOL;
                 continue;
             }
 

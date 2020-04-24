@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Config;
+namespace App;
+
+use App\Parser;
 
 /**
  * Stores settings from configuration file
@@ -155,12 +157,12 @@ class Config
      * @param string $type
      * @return void
      */
-    private static function chooseParser(string $type): ParserInterface
+    private static function chooseParser(string $type): Parser\ParserInterface
     {
         switch ($type) {
             case 'yaml':
             case 'json':
-                return new ParserYaml();
+                return new Parser\Yaml();
                 break;
 
             default:

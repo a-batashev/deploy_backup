@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\ArgumentsProcessor;
-use App\Config\Config;
+use App\Config;
 
 /**
  * Parent class for commands

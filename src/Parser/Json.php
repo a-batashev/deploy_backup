@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Config;
+namespace App\Parser;
 
-class ParserJson implements ParserInterface
+class Json implements ParserInterface
 {
     public static function parseFile($file)
     {

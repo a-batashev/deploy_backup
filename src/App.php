@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Config\Config;
 use App\Command\Command;
 
 /**

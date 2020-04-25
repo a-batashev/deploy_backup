@@ -137,4 +137,9 @@ class ArgumentsProcessor
     {
         return self::$instance->getOption('dry-run') ?? false;
     }
+
+    public function isQuiet(): bool
+    {
+        return self::$instance->getOption('quiet') ?? false;
+    }
 }

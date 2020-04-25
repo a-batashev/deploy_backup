@@ -44,6 +44,7 @@ class Command
         $commands = [
             'clean',
             'download',
+            'database',
             'configure',
             'deploy',
         ];

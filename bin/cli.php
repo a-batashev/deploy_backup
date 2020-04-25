@@ -9,14 +9,17 @@ $doc = <<<DOC
 Deploy a backup
 
 Usage:
-    cli.php clean <preset> [-d]
-    cli.php download <preset> [-d]
-    cli.php configure <preset> [-d]
-    cli.php deploy <preset> [-d]
+    cli.php clean <preset> [-d -c<file>]
+    cli.php download <preset> [-d -c<file>]
+    cli.php database <preset> [-d -c<file>]
+    cli.php configure <preset> [-d -c<file>]
+    cli.php deploy <preset> [-d -c<file>]
 
 Options:
-    -d --dry-run    Only print results
-    -q --quiet      Don't use output
+    -c, --config=<file>  Configuration file (default: config.yaml)
+    -d, --dry-run        Only print results
+    -h, --help           Show this screen
+    -q, --quiet          Don't use output
 DOC;
 
 $docopt = Docopt::handle($doc);

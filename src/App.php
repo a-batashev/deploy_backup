@@ -10,6 +10,11 @@ use App\Command\Command;
 class App
 {
     /**
+     * Default name of the configuration file
+     */
+    private const CONFIG_FILENAME = 'config.yaml';
+
+    /**
      * Construct
      *
      * @param array $rawArgs
@@ -35,12 +40,14 @@ class App
         // Get configuration from file
         $config = Config::getInstance();
 
-        $configFile = $this->makePathToConfig();
-
         // Get configuration by preset's name
         $config->setPreset($presetName);
 
         // Parse the configuration file
+        $configFilename = $args->getOption('config');
+
+        $configFile = $this->makePathToConfig($configFilename);
+
         $config->parse($configFile);
 
         // Run command
@@ -52,8 +59,17 @@ class App
      *
      * @return string
      */
-    private function makePathToConfig(): string
+    private function makePathToConfig($configFilename = null): string
     {
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config.json';
+        $basedir = dirname(__DIR__) . DIRECTORY_SEPARATOR;
+        $filename = $configFilename ?? self::CONFIG_FILENAME;
+
+        $fs = new \Symfony\Component\Filesystem\Filesystem();
+
+        if ($fs->isAbsolutePath($filename)) {
+            return $filename;
+        }
+
+        return "{$basedir}{$filename}";
     }
 }

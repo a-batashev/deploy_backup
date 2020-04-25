@@ -16,8 +16,6 @@ class Download extends Command
      */
     public static function run()
     {
-        $sitePath = self::$config['sitePath'];
-
         $transportType = self::$config['transport']['type'];
 
         $downloader = self::chooseDownloader($transportType);

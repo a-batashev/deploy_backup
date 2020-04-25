@@ -9,11 +9,11 @@ $doc = <<<DOC
 Deploy a backup
 
 Usage:
-    cli.php clean <preset> [-d -c<file>]
-    cli.php download <preset> [-d -c<file>]
-    cli.php database <preset> [-d -c<file>]
-    cli.php configure <preset> [-d -c<file>]
-    cli.php deploy <preset> [-d -c<file>]
+    cli.php clean <preset> [-c<file> -d -q]
+    cli.php download <preset> [-c<file> -d -q]
+    cli.php database <preset> [-c<file> -d -q]
+    cli.php configure <preset> [-c<file> -d -q]
+    cli.php deploy <preset> [-c<file> -d -q]
 
 Options:
     -c, --config=<file>  Configuration file (default: config.yaml)

@@ -2,12 +2,13 @@
 
 namespace App\Command;
 
-use Dotenv\Dotenv;
-
+/**
+ * Load database from a dump
+ */
 class Database extends Command
 {
     /**
-     * Load database from dump
+     * Run command
      *
      * @return void
      */
@@ -34,7 +35,7 @@ class Database extends Command
      */
     private static function loadEnv(string $env)
     {
-        Dotenv::createImmutable($env)->load();
+        \Dotenv\Dotenv::createImmutable($env)->load();
     }
 
     /**

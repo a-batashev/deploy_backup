@@ -3,3 +3,4 @@
 /config.*
 phpunit.xml
 .phpunit.result.cache
+/src/Configurator/*.php

@@ -27,7 +27,7 @@ class Restic implements DownloaderInterface
 
         $options = $config['transport']['options'];
 
-        $cmd = 'restic restore';
+        $cmd = 'restic restore latest';
         foreach ($options as $key => $value) {
             $cmd .= " --{$key}";
 

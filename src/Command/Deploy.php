@@ -8,6 +8,7 @@ class Deploy extends Command
     {
         Clean::run();
         Download::run();
+        Database::run();
         Configure::run();
 
         echo 'Deploy is successfull';

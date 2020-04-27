@@ -85,7 +85,7 @@ class Clean extends Command
         foreach ($files as $file) {
             $path = $dir . DIRECTORY_SEPARATOR . $file;
 
-            if (!is_writable($path) || !is_readable($path)) {
+            if (!is_readable($path)) {
                 echo "Can't access to {$path}", PHP_EOL;
                 continue;
             }

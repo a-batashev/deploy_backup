@@ -22,7 +22,9 @@ class Download extends Command
 
         $downloader->get();
 
-        echo 'Download complete', PHP_EOL;
+        if (!self::$args->isQuiet()) {
+            echo 'Download complete', PHP_EOL;
+        }
     }
 
     /**

@@ -30,7 +30,9 @@ class Filesystem implements DownloaderInterface
             throw new \Exception("Directory isn't exist: '{$from}'.");
         }
 
-        echo "Copy from '{$from}' to '{$sitePath}'", PHP_EOL;
+        if (!$args->isQuiet()) {
+            echo "Copy from '{$from}' to '{$sitePath}'", PHP_EOL;
+        }
 
         if (!$args->isDryRun()) {
             $filesystem = new FS();

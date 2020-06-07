@@ -8,13 +8,17 @@ class Deploy extends Command
     {
         $preset = self::$args->getArgument('preset');
 
-        echo "Deploy of '{$preset}' started", PHP_EOL;
+        if (!self::$args->isQuiet()) {
+            echo "Deploy of '{$preset}' started", PHP_EOL;
+        }
 
         Clean::run();
         Download::run();
         Database::run();
         Configure::run();
 
-        echo "Deploy of '{$preset}' is successfull", PHP_EOL;
+        if (!self::$args->isQuiet()) {
+            echo "Deploy of '{$preset}' is successfull", PHP_EOL;
+        }
     }
 }

@@ -25,6 +25,8 @@ class Configure extends Command
 
         require $confClassFile;
 
-        echo 'Configuration setting complete', PHP_EOL;
+        if (!self::$args->isQuiet()) {
+            echo 'Configuration setting complete', PHP_EOL;
+        }
     }
 }

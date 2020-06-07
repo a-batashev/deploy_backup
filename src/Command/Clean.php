@@ -18,7 +18,9 @@ class Clean extends Command
 
         self::cleanDir($sitePath);
 
-        echo 'Cleaning complete', PHP_EOL;
+        if (!self::$args->isQuiet()) {
+            echo 'Cleaning complete', PHP_EOL;
+        }
     }
 
     /**

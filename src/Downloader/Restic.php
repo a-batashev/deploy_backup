@@ -42,7 +42,10 @@ class Restic implements DownloaderInterface
             exec($cmd, $output, $return);
 
             if ($return) {
-                throw new \Exception("Can't get files.");
+                if (!$args->isQuiet()) {
+                    echo "Can't get files (code: {$return}).";
+                }
+                // throw new \Exception("Can't get files.");
             }
         }
     }

@@ -88,6 +88,16 @@ class Clean extends Command
             $path = $dir . DIRECTORY_SEPARATOR . $file;
 
             if (!is_readable($path)) {
+                if (is_link($path)) {
+                    if ($dryRun) {
+                        echo "unlink symlink {$path}", PHP_EOL;
+                    } else {
+                        unlink($path);
+                    }
+
+                    continue;
+                }
+
                 echo "Can't access to {$path}", PHP_EOL;
                 continue;
             }

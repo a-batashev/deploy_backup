@@ -28,14 +28,14 @@ class Database extends Command
     }
 
     /**
-     * Load settings from .env
+     * Load settings from environment
      *
      * @param string $env
      * @return void
      */
     protected static function loadEnv(string $env)
     {
-        \Dotenv\Dotenv::createImmutable($env)->load();
+        $_ENV = require($env);
     }
 
     /**
@@ -49,10 +49,8 @@ class Database extends Command
             throw new \Exception("Configuration option 'envPath' is empty.");
         }
 
-        $envFile = "{$envPath}/.env";
-
-        if (!file_exists($envFile)) {
-            throw new \Exception("Incorrect path to the .env: '{$envFile}'.");
+        if (!file_exists($envPath)) {
+            throw new \Exception("Incorrect path to the environment file: '{$envPath}'.");
         }
     }
 
@@ -64,10 +62,11 @@ class Database extends Command
     protected static function loadDump()
     {
         $args = self::$args;
-
         $sshConfig = $args->getArgument('preset');
 
-        $cmd = "restic -r sftp:bitrix@${sshConfig}:/backup/restic-repo -p ~/scripts/restic.password dump --tag=mysql,{$_ENV['DB_NAME']} latest {$_ENV['DB_NAME']}.sql | mysql --login-path={$_ENV['DB_NAME']} {$_ENV['DB_NAME']}";
+        $dbName = $_ENV['database']['name'];
+
+        $cmd = "restic -r sftp:bitrix@${sshConfig}:/backup/restic-repo -p ~/scripts/restic.password dump --tag=mysql,{$dbName} latest {$dbName}.sql | mysql --login-path={$dbName} {$dbName}";
 
         if (!$args->isQuiet()) {
             echo $cmd, PHP_EOL;

@@ -122,7 +122,7 @@ class Config
      * @param string $file
      * @return void
      */
-    private function checkConfigFile(string $file)
+    protected static function checkConfigFile(string $file)
     {
         if (!file_exists($file)) {
             throw new \Exception("Configuration file doesn't exist: '{$file}'.");
@@ -147,7 +147,7 @@ class Config
         }
 
         if (!file_exists($config['sitePath'])) {
-            throw new \Exception("Incorrect path to site directory: '{$config['sitePath']}'.");
+            throw new \Exception("Incorrect path to the site directory: '{$config['sitePath']}'.");
         }
     }
 

@@ -33,7 +33,7 @@ class Download extends Command
      * @param string $transport
      * @return Downloader\DownloaderInterface
      */
-    private static function chooseDownloader(string $transport): Downloader\DownloaderInterface
+    protected static function chooseDownloader(string $transport): Downloader\DownloaderInterface
     {
         switch ($transport) {
             case 'filesystem':

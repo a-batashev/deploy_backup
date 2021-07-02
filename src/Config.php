@@ -14,21 +14,21 @@ class Config
      *
      * @var array
      */
-    private static $config = [];
+    protected static $config = [];
 
     /**
      * Instance of Config
      *
      * @var Config
      */
-    private static $instance;
+    protected static $instance;
 
     /**
      * Current preset
      *
      * @var string
      */
-    private static $preset;
+    protected static $preset;
 
     /**
      * Construct is hidden for singleton
@@ -157,7 +157,7 @@ class Config
      * @param string $type
      * @return void
      */
-    private static function chooseParser(string $type): Parser\ParserInterface
+    protected static function chooseParser(string $type): Parser\ParserInterface
     {
         switch ($type) {
             case 'yaml':
@@ -177,7 +177,7 @@ class Config
      * @param string $file
      * @return string
      */
-    private static function getType(string $file): string
+    protected static function getType(string $file): string
     {
         $extension = pathinfo($file, PATHINFO_EXTENSION);
 

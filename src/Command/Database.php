@@ -33,7 +33,7 @@ class Database extends Command
      * @param string $env
      * @return void
      */
-    private static function loadEnv(string $env)
+    protected static function loadEnv(string $env)
     {
         \Dotenv\Dotenv::createImmutable($env)->load();
     }
@@ -43,7 +43,7 @@ class Database extends Command
      *
      * @return void
      */
-    private static function checkEnvPath(string $envPath)
+    protected static function checkEnvPath(string $envPath)
     {
         if ($envPath === '') {
             throw new \Exception("Configuration option 'envPath' is empty.");
@@ -61,7 +61,7 @@ class Database extends Command
      *
      * @return void
      */
-    private static function loadDump()
+    protected static function loadDump()
     {
         $args = self::$args;
 

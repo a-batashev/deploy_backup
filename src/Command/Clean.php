@@ -63,7 +63,7 @@ class Clean extends Command
      * @param boolean $deleteThisDir    Remove self?
      * @return void
      */
-    private static function rrmdir(string $dir, bool $dryRun = false, bool $deleteThisDir = false)
+    protected static function rrmdir(string $dir, bool $dryRun = false, bool $deleteThisDir = false)
     {
         if (!is_readable($dir) || !is_writable($dir)) {
             echo "Can't remove {$dir}", PHP_EOL;

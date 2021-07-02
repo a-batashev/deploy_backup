@@ -12,28 +12,28 @@ class ArgumentsProcessor
      *
      * @var array
      */
-    private static $arguments = [];
+    protected static $arguments = [];
 
     /**
      * Processed CLI options
      *
      * @var array
      */
-    private static $options = [];
+    protected static $options = [];
 
     /**
      * Processed CLI commands
      *
      * @var array
      */
-    private static $commands = [];
+    protected static $commands = [];
 
     /**
      * Instance of ArgumentsProcessor
      *
      * @var ArgumentsProcessor
      */
-    private static $instance;
+    protected static $instance;
 
     /**
      * Construct is hidden for singleton

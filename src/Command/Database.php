@@ -63,26 +63,14 @@ class Database extends Command
      */
     private static function loadDump()
     {
-        $mysqlParams = [
-            'DB_HOST' => '--host=',
-            'DB_USER' => '--user=',
-            'DB_PASSWORD' => '--password=',
-            'DB_NAME' => '',
-        ];
-
-        $dbOptions = '';
-        foreach ($mysqlParams as $param => $key) {
-            $dbOptions .= "{$key}{$_ENV[$param]} ";
-        }
-
         $args = self::$args;
 
         $sshConfig = $args->getArgument('preset');
 
-        $cmd = "restic -r sftp:bitrix@${sshConfig}:/backup/restic-repo -p /home/bitrix/scripts/restic.password dump --tag=mysql,{$_ENV['DB_NAME']} latest {$_ENV['DB_NAME']}.sql | mysql $dbOptions";
+        $cmd = "restic -r sftp:bitrix@${sshConfig}:/backup/restic-repo -p ~/scripts/restic.password dump --tag=mysql,{$_ENV['DB_NAME']} latest {$_ENV['DB_NAME']}.sql | mysql --login-path={$_ENV['DB_NAME']} {$_ENV['DB_NAME']}";
 
         if (!$args->isQuiet()) {
-            echo($cmd);
+            echo $cmd, PHP_EOL;
         }
 
         if (!$args->isDryRun()) {

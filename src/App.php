@@ -12,7 +12,7 @@ class App
     /**
      * Default name of the configuration file
      */
-    private const CONFIG_FILENAME = 'config.yaml';
+    protected const CONFIG_FILENAME = 'config.yaml';
 
     /**
      * Construct
@@ -59,7 +59,7 @@ class App
      *
      * @return string
      */
-    private function makePathToConfig($configFilename = null): string
+    protected function makePathToConfig($configFilename = null): string
     {
         $basedir = dirname(__DIR__) . DIRECTORY_SEPARATOR;
         $filename = $configFilename ?? self::CONFIG_FILENAME;

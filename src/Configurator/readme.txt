@@ -1,2 +1,2 @@
-Put your configuration scripts to this folder.
+Put your configuration scripts in this folder.
 Filename of the script must be '<PresetName>.php'

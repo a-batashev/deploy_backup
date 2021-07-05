@@ -4,7 +4,6 @@ namespace App\Downloader;
 
 use App\ArgumentsProcessor;
 use App\Config;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem as FS;
 
 /**

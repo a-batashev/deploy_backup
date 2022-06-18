@@ -4,3 +4,4 @@
 phpunit.xml
 .phpunit.result.cache
 /src/Configurator/*.php
+php_errors.log

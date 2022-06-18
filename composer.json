@@ -4,8 +4,8 @@
     "type": "project",
     "authors": [
         {
-            "name": "AA.Batashev",
-            "email": "AA.Batashev@npo-nauka.ru"
+            "name": "Anton Batashev",
+            "email": "aa.batashev@npo-nauka.ru"
         }
     ],
     "autoload": {

@@ -3,7 +3,6 @@
 namespace App\Tests;
 
 use PHPUnit\Framework\TestCase;
-use App\Config\Parser;
 
 class ConfigParserTest extends TestCase
 {
@@ -11,7 +10,7 @@ class ConfigParserTest extends TestCase
 
     public function setUp(): void
     {
-        $this->filename =
+        $this->filename = '';
 
         $rawArgs = [
             'command1' => 1,
@@ -25,6 +24,4 @@ class ConfigParserTest extends TestCase
 
         $this->instance = new ConfigParser($filename);
     }
-
-
 }

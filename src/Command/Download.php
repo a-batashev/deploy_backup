@@ -37,7 +37,7 @@ class Download extends Command
      */
     protected static function chooseDownloader(string $transport): DownloaderInterface
     {
-        $downloaderClass = Downloader::class . '\\' . $transport;
+        $downloaderClass = Downloader::class . '\\' . ucfirst($transport);
 
         if (class_exists($downloaderClass)) {
             return new $downloaderClass();

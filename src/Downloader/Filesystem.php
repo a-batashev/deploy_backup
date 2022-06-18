@@ -23,7 +23,7 @@ class Filesystem implements DownloaderInterface
         $config = Config::getInstance()->getConfigByPreset();
 
         $sitePath = $config['sitePath'];
-        $from = $config['transport']['options']['from'];
+        $from = $config['transport']['from'];
 
         if (!file_exists($from)) {
             throw new \Exception("Directory isn't exist: '{$from}'.");

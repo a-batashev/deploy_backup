@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Downloader;
+use App\Downloader\DownloaderInterface;
 
 /**
  * Get files from remote/local repository
@@ -31,22 +32,17 @@ class Download extends Command
      * Downloader dispatching
      *
      * @param string $transport
-     * @return Downloader\DownloaderInterface
+     * @throws \Exception
+     * @return DownloaderInterface
      */
-    protected static function chooseDownloader(string $transport): Downloader\DownloaderInterface
+    protected static function chooseDownloader(string $transport): DownloaderInterface
     {
-        switch ($transport) {
-            case 'filesystem':
-                return new Downloader\Filesystem();
-                break;
+        $downloaderClass = Downloader::class . '\\' . $transport;
 
-            case 'restic':
-                return new Downloader\Restic();
-                break;
-
-            default:
-                throw new \Exception("Transport '{$transport}' not found.");
-                break;
+        if (class_exists($downloaderClass)) {
+            return new $downloaderClass();
         }
+
+        throw new \Exception("Transport '{$transport}' not found.");
     }
 }

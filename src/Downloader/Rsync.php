@@ -41,7 +41,7 @@ class Rsync implements DownloaderInterface
             throw new \Exception("Missed option [transport][from] or [sitePath]");
         }
 
-        $cmd .= " {$config['transport']['from']}/ {$config['sitePath']}";
+        $cmd .= " {$config['transport']['from']} {$config['sitePath']}";
 
         if ($args->isDryRun()) {
             echo $cmd, PHP_EOL;

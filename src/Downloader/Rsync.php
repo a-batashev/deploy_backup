@@ -32,7 +32,9 @@ class Rsync implements DownloaderInterface
         foreach ($options as $key => $value) {
             $cmd .= " --{$key}";
 
-            if (strlen($value)) {
+            $value = strval($value);
+
+            if ($value !== '') {
                 $cmd .= '=' . escapeshellarg($value);
             }
         }

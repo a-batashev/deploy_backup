@@ -2,7 +2,7 @@
     "name": "nauka/deploy_backup",
     "description": "Gets, unpacks and configurates backups of sites",
     "type": "project",
-	"license": "MIT",
+    "license": "MIT",
     "authors": [
         {
             "name": "Anton Batashev",
@@ -15,7 +15,7 @@
         }
     },
     "require": {
-        "php": "^7.3",
+        "php": ">=7.3",
         "docopt/docopt": "^1.0",
         "symfony/yaml": "^5.0",
         "monolog/monolog": "^2.0",

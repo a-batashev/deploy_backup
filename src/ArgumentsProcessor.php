@@ -52,7 +52,7 @@ class ArgumentsProcessor
     /**
      * Disables unserialize for singleton
      */
-    private function __wakeup()
+    public function __wakeup()
     {
     }
 

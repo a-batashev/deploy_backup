@@ -2,8 +2,8 @@
 
 namespace App\Downloader;
 
-use App\ArgumentsProcessor;
 use App\Config;
+use App\ConsoleInput;
 use Symfony\Component\Filesystem\Filesystem as FS;
 
 /**
@@ -12,30 +12,27 @@ use Symfony\Component\Filesystem\Filesystem as FS;
 class Filesystem implements DownloaderInterface
 {
     /**
-     * Copy files from backup to sitepath
-     *
-     * @return void
+     * Copy the files from the backup to the site path
      */
-    public static function get()
+    public static function get(): void
     {
-        $args = ArgumentsProcessor::getInstance();
+        $options = ConsoleInput::getInstance()->getOptions();
+        $cfg = Config::getInstance()->getConfigByPreset();
 
-        $config = Config::getInstance()->getConfigByPreset();
-
-        $sitePath = $config['sitePath'];
-        $from = $config['transport']['from'];
+        $from = $cfg['transport']['options']['from'];
+        $to = $cfg['sitePath'];
 
         if (!file_exists($from)) {
             throw new \Exception("Directory isn't exist: '{$from}'.");
         }
 
-        if (!$args->isQuiet()) {
-            echo "Copy from '{$from}' to '{$sitePath}'", PHP_EOL;
+        if (!$options['quiet']) {
+            echo "Copy from '{$from}' to '{$to}'", PHP_EOL;
         }
 
-        if (!$args->isDryRun()) {
+        if (!$options['dry-run']) {
             $filesystem = new FS();
-            $filesystem->mirror($from, $sitePath);
+            $filesystem->mirror($from, $to);
         }
     }
 }

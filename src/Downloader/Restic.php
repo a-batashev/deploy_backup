@@ -2,8 +2,8 @@
 
 namespace App\Downloader;
 
-use App\ArgumentsProcessor;
 use App\Config;
+use App\ConsoleInput;
 
 /**
  * Restic
@@ -12,23 +12,16 @@ class Restic implements DownloaderInterface
 {
     /**
      * Get files from Restic's repository
-     *
-     * @return void
      */
-    public static function get()
+    public static function get(): void
     {
-        $args = ArgumentsProcessor::getInstance();
+        $options = ConsoleInput::getInstance()->getOptions();
+        $cfg = Config::getInstance()->getConfigByPreset();
 
-        $config = Config::getInstance()->getConfigByPreset();
-
-        $sitePath = $config['sitePath'];
-
-        $tag = $args->getArgument('preset');
-
-        $options = $config['transport']['options'];
+        $transportOptions = (array) $cfg['transport']['options'];
 
         $cmd = 'restic restore latest';
-        foreach ($options as $key => $value) {
+        foreach ($transportOptions as $key => $value) {
             $cmd .= " --{$key}";
 
             if (strlen($value)) {
@@ -36,16 +29,15 @@ class Restic implements DownloaderInterface
             }
         }
 
-        if ($args->isDryRun()) {
+        if ($options['dry-run']) {
             echo $cmd, PHP_EOL;
         } else {
             exec($cmd, $output, $return);
 
             if ($return) {
-                if (!$args->isQuiet()) {
+                if (!$options['quiet']) {
                     echo "Can't get files (code: {$return}).";
                 }
-                // throw new \Exception("Can't get files.");
             }
         }
     }

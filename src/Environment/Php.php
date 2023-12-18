@@ -7,10 +7,10 @@ class Php
     /**
      * Load environment from a PHP file
      *
+     * @throws \Exception
      * @param string $envFile
-     * @return void
      */
-    public function parseFile($envFile)
+    public function parseFile($envFile): void
     {
         if (!is_file($envFile) || !is_readable($envFile)) {
             throw new \Exception("Can't read environment from file: '{$envFile}'.");

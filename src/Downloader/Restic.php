@@ -24,7 +24,7 @@ class Restic implements DownloaderInterface
         foreach ($transportOptions as $key => $value) {
             $cmd .= " --{$key}";
 
-            if (strlen($value)) {
+            if ($value != '') {
                 $cmd .= '=' . escapeshellarg($value);
             }
         }

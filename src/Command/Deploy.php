@@ -2,23 +2,40 @@
 
 namespace App\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+#[AsCommand(name: 'deploy', description: 'Deploy backup')]
 class Deploy extends Command
 {
-    public function run()
+    /** @inheritDoc */
+    protected function executeChild(InputInterface $input, OutputInterface $output)
     {
-        $preset = self::$args->getArgument('preset');
+        $preset = $input->getArgument('preset');
 
-        if (!self::$args->isQuiet()) {
-            echo "Deploy of '{$preset}' started", PHP_EOL;
+        if (!$this->quiet) {
+            $output->writeln("Deploy of '{$preset}' started");
         }
 
-        Clean::run();
-        Download::run();
-        Database::run();
-        Configure::run();
+        $app = $this->getApplication();
 
-        if (!self::$args->isQuiet()) {
-            echo "Deploy of '{$preset}' is successfull", PHP_EOL;
+        $commands = ['clean', 'download', 'database', 'configure'];
+        foreach ($commands as $command) {
+            $cmdInput = new ArrayInput([
+                'command' => $command,
+                'preset' => $preset,
+                '--dry-run' => $input->getOption('dry-run'),
+                '--quiet' => $input->getOption('quiet'),
+                '--config' => $input->getOption('config'),
+            ]);
+
+            $app->doRun($cmdInput, $output);
+        }
+
+        if (!$this->quiet) {
+            $output->writeln("Deploy of '{$preset}' is successfull");
         }
     }
 }

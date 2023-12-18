@@ -4,27 +4,24 @@ namespace App\Command;
 
 use App\Downloader;
 use App\Downloader\DownloaderInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Get files from remote/local repository
- */
+#[AsCommand(name: 'download', description: 'Get files from remote/local repository')]
 class Download extends Command
 {
-    /**
-     * Run command
-     *
-     * @return void
-     */
-    public static function run()
+    /** @inheritDoc */
+    protected function executeChild(InputInterface $input, OutputInterface $output)
     {
-        $transportType = self::$config['transport']['type'];
+        $transportType = $this->cfg['transport']['type'];
 
-        $downloader = self::chooseDownloader($transportType);
+        $downloader = $this->chooseDownloader($transportType);
 
         $downloader->get();
 
-        if (!self::$args->isQuiet()) {
-            echo 'Download complete', PHP_EOL;
+        if (!$this->quiet) {
+            $output->writeln('Download complete');
         }
     }
 
@@ -35,7 +32,7 @@ class Download extends Command
      * @throws \Exception
      * @return DownloaderInterface
      */
-    protected static function chooseDownloader(string $transport): DownloaderInterface
+    protected function chooseDownloader(string $transport): DownloaderInterface
     {
         $downloaderClass = Downloader::class . '\\' . ucfirst($transport);
 

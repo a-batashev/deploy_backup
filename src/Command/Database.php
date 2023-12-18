@@ -2,40 +2,36 @@
 
 namespace App\Command;
 
+use App\Config;
 use App\Environment;
-use App\Environment\DotEnv;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Load database from a dump
- */
+#[AsCommand(name: 'database', description: 'Load database from the dump')]
 class Database extends Command
 {
-    /**
-     * Run command
-     *
-     * @return void
-     */
-    public static function run()
+    /** @inheritDoc */
+    protected function executeChild(InputInterface $input, OutputInterface $output)
     {
         new Environment();
 
-        $args = self::$args;
-        $sshConfig = $args->getArgument('preset');
+        $sshConfig = Config::getInstance()->getPreset();
 
         $dbName = $_ENV['database']['name'];
 
-        $cmd = "restic -r sftp:bitrix@${sshConfig}:/backup/restic-repo -p ~/scripts/restic.password dump --tag=mysql,{$dbName} latest {$dbName}.sql | mysql --login-path={$dbName} {$dbName}";
+        $cmd = "restic -r sftp:bitrix@{$sshConfig}:/backup/restic-repo -p ~/scripts/restic.password dump --tag=mysql,{$dbName} latest {$dbName}.sql | mysql --login-path={$dbName} {$dbName}";
 
-        if (!$args->isQuiet()) {
-            echo $cmd, PHP_EOL;
+        if (!$this->quiet) {
+            $output->writeln($cmd);
         }
 
-        if (!$args->isDryRun()) {
+        if (!$this->dryRun) {
             exec($cmd);
         }
 
-        if (!self::$args->isQuiet()) {
-            echo 'Database loading complete', PHP_EOL;
+        if (!$this->quiet) {
+            $output->writeln('Database loading complete');
         }
     }
 }

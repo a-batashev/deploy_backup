@@ -2,34 +2,36 @@
 
 namespace App\Command;
 
-/**
- * Removes content of the directory
- */
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+#[AsCommand(name: 'clean', description: 'Removes content of the directory')]
 class Clean extends Command
 {
-    /**
-     * Run command
-     */
-    public static function run()
+    /** @inheritDoc */
+    protected function executeChild(InputInterface $input, OutputInterface $output)
     {
-        $sitePath = self::$config['sitePath'];
+        // Cleaning
+        $sitePath = $this->cfg['sitePath'];
 
-        self::checkDir($sitePath);
+        $this->checkDir($sitePath);
 
-        self::cleanDir($sitePath);
+        $this->cleanDir($sitePath);
 
-        if (!self::$args->isQuiet()) {
-            echo 'Cleaning complete', PHP_EOL;
+        if (!$this->quiet) {
+            $output->writeln('Cleaning complete.');
         }
     }
 
     /**
-     * Check directory and remove children files/directories
+     * Check directory for reading/writing
      *
-     * @param string $dir
+     * @param string $dir Path to the directory
+     * @throws \Exception
      * @return void
      */
-    public static function checkDir(string $dir)
+    public function checkDir(string $dir): void
     {
         if (!is_readable($dir)) {
             throw new \Exception("Directory isn't readable: '{$dir}'.");
@@ -43,12 +45,12 @@ class Clean extends Command
     /**
      * Remove children of the directory
      *
-     * @param string $dir
+     * @param string $dir Path to the directory
      * @return void
      */
-    public static function cleanDir(string $dir)
+    public function cleanDir(string $dir): void
     {
-        self::rrmdir($dir, self::$args->isDryRun());
+        $this->rrmdir($dir, $this->dryRun);
 
         if (!file_exists($dir)) {
             mkdir($dir, 0775);
@@ -59,11 +61,10 @@ class Clean extends Command
      * Remove recursively content of a directory
      *
      * @param string $dir
-     * @param boolean $dryRun    Don't clean, only print names of files/dirs
-     * @param boolean $deleteThisDir    Remove self?
+     * @param boolean $deleteThisDir Remove self?
      * @return void
      */
-    protected static function rrmdir(string $dir, bool $dryRun = false, bool $deleteThisDir = false)
+    protected function rrmdir(string $dir, bool $deleteThisDir = false)
     {
         if (!is_readable($dir) || !is_writable($dir)) {
             echo "Can't remove {$dir}", PHP_EOL;
@@ -89,7 +90,7 @@ class Clean extends Command
 
             if (!is_readable($path)) {
                 if (is_link($path)) {
-                    if ($dryRun) {
+                    if ($this->dryRun) {
                         echo "unlink symlink {$path}", PHP_EOL;
                     } else {
                         unlink($path);
@@ -103,9 +104,9 @@ class Clean extends Command
             }
 
             if (is_dir($path)) {
-                self::rrmdir($path, $dryRun, true);
+                self::rrmdir($path, $this->dryRun, true);
             } else {
-                if ($dryRun) {
+                if ($this->dryRun) {
                     echo "unlink {$path}", PHP_EOL;
                 } else {
                     unlink($path);
@@ -114,7 +115,7 @@ class Clean extends Command
         }
 
         if ($deleteThisDir) {
-            if ($dryRun) {
+            if ($this->dryRun) {
                 echo "rmdir {$dir}", PHP_EOL;
             } else {
                 rmdir($dir);

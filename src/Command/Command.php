@@ -2,61 +2,60 @@
 
 namespace App\Command;
 
-use App\ArgumentsProcessor;
 use App\Config;
+use App\ConsoleInput;
+use Symfony\Component\Console\Command\Command as ConsoleCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Parent class for commands
  */
-class Command
+abstract class Command extends ConsoleCommand
 {
-    /**
-     * Instance of Config
-     *
-     * @var Config
-     */
-    protected static $config;
+    protected bool $dryRun = false;
+    protected bool $quiet = false;
+    protected array $cfg = [];
 
     /**
-     * Instance of ArgumentsProcessor
-     *
-     * @var ArgumentsProcessor
+     * Configure command
      */
-    protected static $args;
-
-    /**
-     * Constructor
-     */
-    protected function __construct()
+    protected function configure()
     {
-        self::$args = ArgumentsProcessor::getInstance();
+        $this
+            ->addArgument('preset', InputArgument::REQUIRED, 'Name of the preset specified in the configuration file')
+            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Configuration file', 'config.yaml')
+            ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Only print results');
+    }
 
-        self::$config = Config::getInstance()->getConfigByPreset();
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        // Set input
+        ConsoleInput::getInstance()->setInput($input);
+
+        // Set options
+        $this->dryRun = $input->getOption('dry-run');
+        $this->quiet = $input->getOption('quiet');
+
+        // Get configuration
+        $this->cfg = Config::getInstance()
+            ->setPreset($input->getArgument('preset'))
+            ->setConfig($input->getOption('config'))
+            ->parse();
+
+        $this->executeChild($input, $output);
+
+        return Command::SUCCESS;
     }
 
     /**
-     * Commands dispatching
+     * Run command
      *
-     * @param string $command
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return void
      */
-    public static function dispatch($command)
-    {
-        $commands = [
-            'clean',
-            'download',
-            'database',
-            'configure',
-            'deploy',
-        ];
-
-        if (!in_array($command, $commands)) {
-            throw new \Exception("Unknown command: '{$command}'.");
-        }
-
-        $className = __NAMESPACE__ . '\\' . ucfirst($command);
-
-        $command = new $className();
-
-        $command->run();
-    }
+    abstract protected function executeChild(InputInterface $input, OutputInterface $output);
 }

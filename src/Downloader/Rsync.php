@@ -3,6 +3,7 @@
 namespace App\Downloader;
 
 use App\Config;
+use App\ConsoleInput;
 
 /**
  * Rsync
